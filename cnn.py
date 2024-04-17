@@ -21,6 +21,7 @@ def label_img(img):
     elif word_label == 'l':
         return [0, 0, 0, 1]
 
+
 def create_train_data():
     training_data = []
     for img in tqdm(os.listdir(TRAIN_DIR)):
@@ -28,11 +29,11 @@ def create_train_data():
         path = os.path.join(TRAIN_DIR,img)
         img = cv2.imread(path,cv2.IMREAD_COLOR)
         img = cv2.resize(img, (IMG_SIZE,IMG_SIZE))
+        print(f"Image shape: {img.shape}, Label shape: {np.array(label).shape}")
         training_data.append([np.array(img), np.array(label)])
     shuffle(training_data)
     np.save('train_data.npy', np.array(training_data))  # Convert list to numpy array before saving
     return training_data
-
 
 
 def process_test_data():
