@@ -28,17 +28,8 @@ def create_train_data():
         path = os.path.join(TRAIN_DIR,img)
         img = cv2.imread(path,cv2.IMREAD_COLOR)
         img = cv2.resize(img, (IMG_SIZE,IMG_SIZE))
+        print(f"Image shape: {img.shape}")  # Add this line to print image shape
         training_data.append([np.array(img), np.array(label)])
-
-    # Check the shapes of all elements in training_data
-    shapes = [data[0].shape for data in training_data]
-    if len(set(shapes)) != 1:
-        print("Shapes of images are not consistent. Please check the dataset.")
-        return None
-
-    shuffle(training_data)
-    np.save('train_data.npy', np.array(training_data))  # Convert list to numpy array before saving
-    return training_data
 
 
 def process_test_data():
