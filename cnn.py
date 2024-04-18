@@ -35,6 +35,8 @@ def create_train_data():
         # Append the shape of the image to the set
         shapes.add(img.shape)
         
+        print(f"Image shape: {img.shape}, Label shape: {np.array(label).shape}")  # Debugging print
+        
         training_data.append([np.array(img), np.array(label)])
     
     # Check if there is only one shape in the set
@@ -45,6 +47,7 @@ def create_train_data():
     shuffle(training_data)
     np.save('train_data.npy', np.array(training_data))  # Convert list to numpy array before saving
     return training_data
+
 
 
 
