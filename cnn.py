@@ -48,8 +48,8 @@ def process_test_data():
     np.save('test_data.npy', np.array(testing_data))  # Convert list to numpy array before saving
     return testing_data
 
-#train_data = create_train_data()
-train_data = np.load('train_data.npy')
+train_data = create_train_data()
+
 
 import tflearn
 from tflearn.layers.conv import conv_2d, max_pool_2d
