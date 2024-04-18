@@ -45,7 +45,8 @@ def create_train_data():
         return None
     
     shuffle(training_data)
-    np.save('train_data.npy', np.array(training_data))  # Convert list to numpy array before saving
+    #np.save('train_data.npy', np.array(training_data))  # Convert list to numpy array before saving
+    m= np.array(training_data)
     return training_data
 
 
