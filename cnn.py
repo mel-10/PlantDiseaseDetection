@@ -35,21 +35,24 @@ def create_train_data():
         # Append the shape of the image to the set
         shapes.add(img.shape)
         
-        print(f"Image shape: {img.shape}, Label shape: {np.array(label).shape}")  # Debugging print
         
         training_data.append([np.array(img), np.array(label)])
-    
-    # Check if there is only one shape in the set
-    if len(shapes) != 1:
-        print("Shapes of images are not consistent. Please check the dataset.")
-        return None
-    
+        training_data_types = [type(item) for item in training_data]
+        unique_training_data_types = np.unique(training_data_types)
+
+        if len(unique_training_data_types) > 1:
+            print("Data types are different at indices:")
+            for i, item in enumerate(training_data_types):
+                 print(f"Index {i}: {item}")
+        else:
+            print("Data types are consistent throughout the array.")
+      
     shuffle(training_data)
     #np.save('train_data.npy', np.array(training_data))  # Convert list to numpy array before saving
     m= np.array(training_data)
     return training_data
 
-
+    
 
 
 
