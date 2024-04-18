@@ -24,15 +24,28 @@ def label_img(img):
 
 def create_train_data():
     training_data = []
+    shapes = set()  # Set to store shapes of all elements
+    
     for img in tqdm(os.listdir(TRAIN_DIR)):
         label = label_img(img)
         path = os.path.join(TRAIN_DIR,img)
         img = cv2.imread(path,cv2.IMREAD_COLOR)
         img = cv2.resize(img, (IMG_SIZE,IMG_SIZE))
+        
+        # Append the shape of the image to the set
+        shapes.add(img.shape)
+        
         training_data.append([np.array(img), np.array(label)])
+    
+    # Check if there is only one shape in the set
+    if len(shapes) != 1:
+        print("Shapes of images are not consistent. Please check the dataset.")
+        return None
+    
     shuffle(training_data)
     np.save('train_data.npy', np.array(training_data))  # Convert list to numpy array before saving
     return training_data
+
 
 
 
