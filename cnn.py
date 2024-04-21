@@ -35,21 +35,12 @@ def create_train_data():
         # Append the shape of the image to the set
         shapes.add(img.shape)
         
-        training_data.append([np.array(img), np.array(label)])
+        training_data.append([np.array(img), label])  # Append image array and label separately
     
     shuffle(training_data)
     
-    # Check the data types of the elements in training_data
-    training_data_types = [type(item[0]) for item in training_data]  # Check the type of the first element in each pair
-    unique_training_data_types = np.unique(training_data_types)
-    if len(unique_training_data_types) > 1:
-        print("Data types are different at indices:")
-        for i, item in enumerate(training_data_types):
-            print(f"Index {i}: {item}")
-    else:
-        print("Data types are consistent throughout the array.")
-
     return training_data
+
 
 
     
