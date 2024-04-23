@@ -2,7 +2,7 @@ import tkinter as tk
 import os
 from PIL import Image, ImageTk
 import cv2
-from picamera import PiCamera
+from picamera2 import PiCamera2
 from time import sleep
 
 window = tk.Tk()
@@ -18,12 +18,12 @@ title.grid()
 
 
 def capture_photo():
-    camera = PiCamera()
-    camera.start_preview()
+    camera2 = PiCamera2()
+    camera2.start_preview()
     sleep(2)  # Adjust the delay as needed to ensure the camera has focused properly
-    camera.capture('live_picture.jpg')  # Save the captured image
-    camera.stop_preview()
-    camera.close()
+    camera2.capture('live_picture.jpg')  # Save the captured image
+    camera2.stop_preview()
+    camera2.close()
     analyze_image()
 
 
