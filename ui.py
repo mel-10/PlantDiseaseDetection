@@ -226,11 +226,17 @@ def openphoto():
     for fileName in fileList:
         os.remove(dirPath + "/" + fileName)
     # C:/Users/sagpa/Downloads/images is the location of the image which you want to test..... you can change it according to the image location you have  
-    fileName = askopenfilename(initialdir='C:/Users/sagpa/Downloads/images', title='Select image for analysis ',
+    fileName = askopenfilename(initialdir='C:/Users/HP/Downloads', title='Select image for analysis ',
                            filetypes=[('image files', '.jpg')])
-    dst = "C:/Users/sagpa/Desktop/plant_project/testpicture"
+    # Specify the directory path where you want to save the image on your Raspberry Pi
+    dst = "/home/pi/project/PlantDiseaseDetection/testpicture.jpg"
+
+    # Copy the selected image file to the specified directory on your Raspberry Pi
     shutil.copy(fileName, dst)
-    load = Image.open(fileName)
+
+    # Load the copied image file
+    load = Image.open(dst)
+
     render = ImageTk.PhotoImage(load)
     img = tk.Label(image=render, height="250", width="500")
     img.image = render
