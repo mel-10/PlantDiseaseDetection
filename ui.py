@@ -92,27 +92,23 @@ def analyse_image():
         elif np.argmax(model_out) == 3:
             str_label = 'lateblight'
 
-        if str_label == 'healthy':
-            status = "HEALTHY"
-        else:
-            status = "UNHEALTHY"
-
+        status = "HEALTHY" if str_label == 'healthy' else "UNHEALTHY"
         message_label.config(text='Status: ' + status)
 
-        if str_label == 'bacterial':
-            diseasename = "Bacterial Spot "
+        if str_label != 'healthy':
+            disease_labels = {
+                'bacterial': "Bacterial Spot",
+                'viral': "Yellow leaf curl virus",
+                'lateblight': "Late Blight"
+            }
+            diseasename = disease_labels.get(str_label, "Unknown Disease")
             disease_label.config(text='Disease Name: ' + diseasename)
-            button_remedies.config(command=bact)
-        elif str_label == 'viral':
-            diseasename = "Yellow leaf curl virus "
-            disease_label.config(text='Disease Name: ' + diseasename)
-            button_remedies.config(command=vir)
-        elif str_label == 'lateblight':
-            diseasename = "Late Blight "
-            disease_label.config(text='Disease Name: ' + diseasename)
-            button_remedies.config(command=latebl)
-        else:
-            r_label.config(text='Plant is healthy')
+            button_remedies.config(command=lambda: show_remedies(diseasename))
+
+            break  # Only process the first detected disease
+
+    else:
+        r_label.config(text='Plant is healthy')
 
 def bact():
     show_remedies("Bacterial Spot", "Discard or destroy any affected plants. Do not compost them. Rotate your tomato plants yearly to prevent re-infection next year. Use copper fungicides.")
