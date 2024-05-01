@@ -10,6 +10,8 @@ from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.estimator import regression
 import tensorflow as tf
+import matplotlib.pyplot as plt
+
 
 # Define global variables for better organization
 IMG_SIZE = 50
