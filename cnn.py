@@ -8,7 +8,7 @@ TRAIN_DIR = 'train/train'
 TEST_DIR = 'test/test'
 IMG_SIZE = 50
 LR = 1e-3
-MODEL_NAME = f'healthyvsunhealthy-{LR}-2conv-basic'
+MODEL_NAME = 'healthyvsunhealthy-{}-{}.model'.format(LR, '2conv-basic')
 
 def label_img(img):
     word_label = img[0]
@@ -95,7 +95,7 @@ convnet = regression(convnet, optimizer='adam', learning_rate=LR, loss='categori
 
 model = tflearn.DNN(convnet, tensorboard_dir='log')
 
-if os.path.exists(f'{MODEL_NAME}.meta'):
+if os.path.exists('{}.meta'.format(MODEL_NAME)):
     model.load(MODEL_NAME)
     print('Model loaded!')
 
