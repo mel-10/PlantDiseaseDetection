@@ -170,6 +170,10 @@ class LeafDiseaseDetectionApp(tk.Tk):
                 button = tk.Button(text="Exit", command=self.exit)
                 button.grid(column=0, row=9, padx=20, pady=20)
 
+        # Add button for re-analyzing
+        reanalyze_button = tk.Button(self, text="Re-Analyze", command=self.analyze_image)
+        reanalyze_button.grid(column=0, row=10, padx=10, pady=10)
+
     # Function to display remedies for Bacterial Spot
     def bact(self):
         window1 = tk.Toplevel()
