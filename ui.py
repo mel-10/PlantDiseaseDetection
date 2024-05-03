@@ -103,6 +103,7 @@ def analysis():
     IMG_SIZE = 50
     LR = 1e-3
     MODEL_NAME = 'healthyvsunhealthy-{}-{}.model'.format(LR, '2conv-basic')
+    model_path = MODEL_NAME + '.meta'
 
     def process_verify_data():
         verifying_data = []
@@ -150,9 +151,14 @@ def analysis():
 
     model = tflearn.DNN(convnet, tensorboard_dir='log')
 
-    if os.path.exists('{}.meta'.format(MODEL_NAME)):
+    if os.path.exists(model_path):
         model.load(MODEL_NAME)
-        print('model loaded!')
+        print('Model loaded!')
+    else
+        print('Model not found at:', model_path)
+
+
+    
 
     import matplotlib.pyplot as plt
 
