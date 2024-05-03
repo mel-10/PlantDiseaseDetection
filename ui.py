@@ -1,69 +1,150 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter.filedialog import askopenfilename
 import shutil
 import os
+import sys
 from PIL import Image, ImageTk
-import cv2
-import numpy as np
-import tflearn
-from tflearn.layers.conv import conv_2d, max_pool_2d
-from tflearn.layers.core import input_data, dropout, fully_connected
-from tflearn.layers.estimator import regression
-import tensorflow as tf
-import matplotlib.pyplot as plt
+
+window = tk.Tk()
+
+window.title("Leaf Disease Detection")
+
+window.geometry("500x510")
+window.configure(background ="lightgreen")
+
+title = tk.Label(text="Click below to choose picture for testing disease....", background = "lightgreen", fg="Brown", font=("", 15))
+title.grid()
+def bact():
+    window.destroy()
+    window1 = tk.Tk()
+
+    window1.title("Dr. Plant")
+
+    window1.geometry("500x510")
+    window1.configure(background="lightgreen")
+
+    def exit():
+        window1.destroy()
+    rem = "The remedies for Bacterial Spot are:\n\n "
+    remedies = tk.Label(text=rem, background="lightgreen",
+                      fg="Brown", font=("", 15))
+    remedies.grid(column=0, row=7, padx=10, pady=10)
+    rem1 = " Discard or destroy any affected plants. \n  Do not compost them. \n  Rotate yoour tomato plants yearly to prevent re-infection next year. \n Use copper fungicites"
+    remedies1 = tk.Label(text=rem1, background="lightgreen",
+                        fg="Black", font=("", 12))
+    remedies1.grid(column=0, row=8, padx=10, pady=10)
+
+    button = tk.Button(text="Exit", command=exit)
+    button.grid(column=0, row=9, padx=20, pady=20)
+
+    window1.mainloop()
 
 
-# Define global variables for better organization
-IMG_SIZE = 50
-LR = 1e-3
-MODEL_NAME = 'healthyvsunhealthy-{}-{}.model'.format(LR, '2conv-basic')
+def vir():
+    window.destroy()
+    window1 = tk.Tk()
 
-def open_photo():
-    dir_path = "testpicture"
-    for file_name in os.listdir(dir_path):
-        os.remove(os.path.join(dir_path, file_name))
-    
-    file_name = filedialog.askopenfilename(initialdir='C:/Users/HP/Downloads', title='Select image for analysis ',
-                                           filetypes=[('Image files', '.jpg')])
-    if not file_name:
-        return  # User canceled file selection
+    window1.title("Dr. Plant")
 
-    dst = "/home/pi/project/PlantDiseaseDetection/testpicture.jpg"
-    shutil.copy(file_name, dst)
+    window1.geometry("650x510")
+    window1.configure(background="lightgreen")
 
-    load = Image.open(dst)
-    render = ImageTk.PhotoImage(load)
-    img_label.configure(image=render)
-    img_label.image = render
+    def exit():
+        window1.destroy()
+    rem = "The remedies for Yellow leaf curl virus are: "
+    remedies = tk.Label(text=rem, background="lightgreen",
+                      fg="Brown", font=("", 15))
+    remedies.grid(column=0, row=7, padx=10, pady=10)
+    rem1 = " Monitor the field, handpick diseased plants and bury them. \n  Use sticky yellow plastic traps. \n  Spray insecticides such as organophosphates, carbametes during the seedliing stage. \n Use copper fungicites"
+    remedies1 = tk.Label(text=rem1, background="lightgreen",
+                         fg="Black", font=("", 12))
+    remedies1.grid(column=0, row=8, padx=10, pady=10)
 
-    title_label.destroy()
-    button_select_photo.destroy()
-    button_analyse_image.grid(column=0, row=2, padx=10, pady=10)
+    button = tk.Button(text="Exit", command=exit)
+    button.grid(column=0, row=9, padx=20, pady=20)
 
-def analyse_image():
+    window1.mainloop()
+
+def latebl():
+    window.destroy()
+    window1 = tk.Tk()
+
+    window1.title("Dr. Plant")
+
+    window1.geometry("520x510")
+    window1.configure(background="lightgreen")
+
+    def exit():
+        window1.destroy()
+    rem = "The remedies for Late Blight are: "
+    remedies = tk.Label(text=rem, background="lightgreen",
+                      fg="Brown", font=("", 15))
+    remedies.grid(column=0, row=7, padx=10, pady=10)
+
+    rem1 = " Monitor the field, remove and destroy infected leaves. \n  Treat organically with copper spray. \n  Use chemical fungicides,the best of which for tomatoes is chlorothalonil."
+    remedies1 = tk.Label(text=rem1, background="lightgreen",
+                         fg="Black", font=("", 12))
+    remedies1.grid(column=0, row=8, padx=10, pady=10)
+
+    button = tk.Button(text="Exit", command=exit)
+    button.grid(column=0, row=9, padx=20, pady=20)
+
+    window1.mainloop()
+
+
+def analysis():
+    import cv2  # working with, mainly resizing, images
+    import numpy as np  # dealing with arrays
+    import os  # dealing with directories
+    from random import shuffle  # mixing up or currently ordered data that might lead our network astray in training.
+    from tqdm import \
+        tqdm  # a nice pretty percentage bar for tasks. Thanks to viewer Daniel BA1/4hler for this suggestion
     verify_dir = 'testpicture'
-    verifying_data = []
+    IMG_SIZE = 50
+    LR = 1e-3
+    MODEL_NAME = 'healthyvsunhealthy-{}-{}.model'.format(LR, '2conv-basic')
 
-    for img in os.listdir(verify_dir):
-        path = os.path.join(verify_dir, img)
-        img_num = img.split('.')[0]
-        img = cv2.imread(path, cv2.IMREAD_COLOR)
-        img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-        verifying_data.append([np.array(img), img_num])
+    def process_verify_data():
+        verifying_data = []
+        for img in tqdm(os.listdir(verify_dir)):
+            path = os.path.join(verify_dir, img)
+            img_num = img.split('.')[0]
+            img = cv2.imread(path, cv2.IMREAD_COLOR)
+            img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+            verifying_data.append([np.array(img), img_num])
+        np.save('verify_data.npy', verifying_data)
+        return verifying_data
+
+    verify_data = process_verify_data()
+    #verify_data = np.load('verify_data.npy')
+
+    import tflearn
+    from tflearn.layers.conv import conv_2d, max_pool_2d
+    from tflearn.layers.core import input_data, dropout, fully_connected
+    from tflearn.layers.estimator import regression
+    import tensorflow as tf
+   
 
     convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 3], name='input')
+
     convnet = conv_2d(convnet, 32, 3, activation='relu')
     convnet = max_pool_2d(convnet, 3)
+
     convnet = conv_2d(convnet, 64, 3, activation='relu')
     convnet = max_pool_2d(convnet, 3)
+
     convnet = conv_2d(convnet, 128, 3, activation='relu')
     convnet = max_pool_2d(convnet, 3)
+
     convnet = conv_2d(convnet, 32, 3, activation='relu')
     convnet = max_pool_2d(convnet, 3)
+
     convnet = conv_2d(convnet, 64, 3, activation='relu')
     convnet = max_pool_2d(convnet, 3)
+
     convnet = fully_connected(convnet, 1024, activation='relu')
     convnet = dropout(convnet, 0.8)
+
     convnet = fully_connected(convnet, 4, activation='softmax')
     convnet = regression(convnet, optimizer='adam', learning_rate=LR, loss='categorical_crossentropy', name='targets')
 
@@ -71,16 +152,21 @@ def analyse_image():
 
     if os.path.exists('{}.meta'.format(MODEL_NAME)):
         model.load(MODEL_NAME)
-        print('Model loaded!')
+        print('model loaded!')
+
+    import matplotlib.pyplot as plt
 
     fig = plt.figure()
 
-    for num, data in enumerate(verifying_data):
-        img_data, img_num = data
+    for num, data in enumerate(verify_data):
+
+        img_num = data[1]
+        img_data = data[0]
 
         y = fig.add_subplot(3, 4, num + 1)
         orig = img_data
         data = img_data.reshape(IMG_SIZE, IMG_SIZE, 3)
+        # model_out = model.predict([data])[0]
         model_out = model.predict([data])[0]
 
         if np.argmax(model_out) == 0:
@@ -92,74 +178,78 @@ def analyse_image():
         elif np.argmax(model_out) == 3:
             str_label = 'lateblight'
 
-        status = "HEALTHY" if str_label == 'healthy' else "UNHEALTHY"
-        message_label.config(text='Status: ' + status)
+        if str_label =='healthy':
+            status ="HEALTHY"
+        else:
+            status = "UNHEALTHY"
 
-        if str_label != 'healthy':
-            disease_labels = {
-                'bacterial': "Bacterial Spot",
-                'viral': "Yellow leaf curl virus",
-                'lateblight': "Late Blight"
-            }
-            diseasename = disease_labels.get(str_label, "Unknown Disease")
-            disease_label.config(text='Disease Name: ' + diseasename)
-            button_remedies.config(command=lambda: show_remedies(diseasename))
+        message = tk.Label(text='Status: '+status, background="lightgreen",
+                           fg="Brown", font=("", 15))
+        message.grid(column=0, row=3, padx=10, pady=10)
+        if str_label == 'bacterial':
+            diseasename = "Bacterial Spot "
+            disease = tk.Label(text='Disease Name: ' + diseasename, background="lightgreen",
+                               fg="Black", font=("", 15))
+            disease.grid(column=0, row=4, padx=10, pady=10)
+            r = tk.Label(text='Click below for remedies...', background="lightgreen", fg="Brown", font=("", 15))
+            r.grid(column=0, row=5, padx=10, pady=10)
+            button3 = tk.Button(text="Remedies", command=bact)
+            button3.grid(column=0, row=6, padx=10, pady=10)
+        elif str_label == 'viral':
+            diseasename = "Yellow leaf curl virus "
+            disease = tk.Label(text='Disease Name: ' + diseasename, background="lightgreen",
+                               fg="Black", font=("", 15))
+            disease.grid(column=0, row=4, padx=10, pady=10)
+            r = tk.Label(text='Click below for remedies...', background="lightgreen", fg="Brown", font=("", 15))
+            r.grid(column=0, row=5, padx=10, pady=10)
+            button3 = tk.Button(text="Remedies", command=vir)
+            button3.grid(column=0, row=6, padx=10, pady=10)
+        elif str_label == 'lateblight':
+            diseasename = "Late Blight "
+            disease = tk.Label(text='Disease Name: ' + diseasename, background="lightgreen",
+                               fg="Black", font=("", 15))
+            disease.grid(column=0, row=4, padx=10, pady=10)
+            r = tk.Label(text='Click below for remedies...', background="lightgreen", fg="Brown", font=("", 15))
+            r.grid(column=0, row=5, padx=10, pady=10)
+            button3 = tk.Button(text="Remedies", command=latebl)
+            button3.grid(column=0, row=6, padx=10, pady=10)
+        else:
+            r = tk.Label(text='Plant is healthy', background="lightgreen", fg="Black",
+                         font=("", 15))
+            r.grid(column=0, row=4, padx=10, pady=10)
+            button = tk.Button(text="Exit", command=exit)
+            button.grid(column=0, row=9, padx=20, pady=20)
 
-            break  # Only process the first detected disease
+def openphoto():
+    dirPath = "testpicture"
+    fileList = os.listdir(dirPath)
+    for fileName in fileList:
+        os.remove(dirPath + "/" + fileName)
+    # C:/Users/sagpa/Downloads/images is the location of the image which you want to test..... you can change it according to the image location you have  
+    fileName = askopenfilename(initialdir='C:/Users/HP/Downloads', title='Select image for analysis ',
+                           filetypes=[('image files', '.jpg')])
+    # Specify the directory path where you want to save the image on your Raspberry Pi
+    dst = "/home/pi/project/PlantDiseaseDetection/testpicture.jpg"
 
-    else:
-        r_label.config(text='Plant is healthy')
+    # Copy the selected image file to the specified directory on your Raspberry Pi
+    shutil.copy(fileName, dst)
 
-def bact():
-    show_remedies("Bacterial Spot", "Discard or destroy any affected plants. Do not compost them. Rotate your tomato plants yearly to prevent re-infection next year. Use copper fungicides.")
+    # Load the copied image file
+    load = Image.open(dst)
 
-def vir():
-    show_remedies("Yellow leaf curl virus", "Monitor the field, handpick diseased plants and bury them. Use sticky yellow plastic traps. Spray insecticides such as organophosphates, carbamates during the seedling stage. Use copper fungicides.")
+    render = ImageTk.PhotoImage(load)
+    img = tk.Label(image=render, height="250", width="500")
+    img.image = render
+    img.place(x=0, y=0)
+    img.grid(column=0, row=1, padx=10, pady = 10)
+    title.destroy()
+    button1.destroy()
+    button2 = tk.Button(text="Analyse Image", command=analysis)
+    button2.grid(column=0, row=2, padx=10, pady = 10)
+button1 = tk.Button(text="Get Photo", command = openphoto)
+button1.grid(column=0, row=1, padx=10, pady = 10)
 
-def latebl():
-    show_remedies("Late Blight", "Monitor the field, remove and destroy infected leaves. Treat organically with copper spray. Use chemical fungicides, the best of which for tomatoes is chlorothalonil.")
 
-def show_remedies(disease_name, remedies):
-    window_remedies = tk.Toplevel()
-    window_remedies.title("Remedies")
-    window_remedies.geometry("400x300")
-    window_remedies.configure(background="lightgreen")
-
-    label_disease = tk.Label(window_remedies, text="Disease: " + disease_name, background="lightgreen", fg="Brown", font=("", 15))
-    label_disease.pack(pady=10)
-
-    label_remedies = tk.Label(window_remedies, text="Remedies:\n" + remedies, background="lightgreen", fg="Black", font=("", 12))
-    label_remedies.pack(pady=10)
-
-    button_exit = tk.Button(window_remedies, text="Exit", command=window_remedies.destroy)
-    button_exit.pack(pady=10)
-
-window = tk.Tk()
-window.title("Leaf Disease Detection")
-window.geometry("500x510")
-window.configure(background="lightgreen")
-
-title_label = tk.Label(window, text="Click below to choose picture for testing disease....", background="lightgreen", fg="Brown", font=("", 15))
-title_label.grid()
-
-button_select_photo = tk.Button(window, text="Select Photo", command=open_photo)
-button_select_photo.grid(column=0, row=1, padx=10, pady=10)
-
-button_analyse_image = tk.Button(window, text="Analyse Image", command=analyse_image)
-
-img_label = tk.Label(window, background="lightgreen")
-img_label.grid(column=0, row=1, padx=10, pady=10)
-
-message_label = tk.Label(window, text="", background="lightgreen", fg="Brown", font=("", 15))
-message_label.grid(column=0, row=3, padx=10, pady=10)
-
-disease_label = tk.Label(window, text="", background="lightgreen", fg="Black", font=("", 15))
-disease_label.grid(column=0, row=4, padx=10, pady=10)
-
-r_label = tk.Label(window, text="", background="lightgreen", fg="Black", font=("", 15))
-r_label.grid(column=0, row=4, padx=10, pady=10)
-
-button_remedies = tk.Button(window, text="Remedies", command=None)  # Command will be set dynamically
-button_remedies.grid(column=0, row=6, padx=10, pady=10)
 
 window.mainloop()
+
