@@ -154,7 +154,7 @@ def analysis():
     if os.path.exists(model_path):
         model.load(MODEL_NAME)
         print('Model loaded!')
-    else
+    else:
         print('Model not found at:', model_path)
 
 
