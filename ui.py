@@ -104,8 +104,7 @@ def analysis():
     import numpy as np  # dealing with arrays
     import os  # dealing with directories
     from random import shuffle  # mixing up or currently ordered data that might lead our network astray in training.
-    from tqdm import \
-        tqdm  # a nice pretty percentage bar for tasks. Thanks to viewer Daniel BA1/4hler for this suggestion
+    from tqdm import tqdm  # a nice pretty percentage bar for tasks. Thanks to viewer Daniel BA1/4hler for this suggestion
     verify_dir = 'testpicture'
     IMG_SIZE = 50
     LR = 1e-3
@@ -153,6 +152,82 @@ def analysis():
     convnet = dropout(convnet, 0.8)
 
     convnet = fully_connected(convnet, 4, activation='softmax')
-    convnet = regression(convnet, optimizer='adam', learning_rate=LR, loss='categorical_crossentropy', name='targets')
+    convnet = regression(convnet, optimizer='adam', learning_rate=LR, loss='categorical_crossentropy',
+                         name='targets')
 
-    model = tflearn.DNN(convnet, tensorboard_dir
+    model = tflearn.DNN(convnet, tensorboard_dir='log')
+
+    if os.path.exists(model_path):
+        model.load(MODEL_NAME)
+        print('Model loaded!')
+    else:
+        print('Model not found at:', model_path)
+
+    import matplotlib.pyplot as plt
+
+    fig = plt.figure()
+
+    for num, data in enumerate(verify_data):
+        img_num = data[1]
+        img_data = data[0]
+
+        y = fig.add_subplot(3, 4, num + 1)
+        orig = img_data
+        data = img_data.reshape(IMG_SIZE, IMG_SIZE, 3)
+        # model_out = model.predict([data])[0]
+        model_out = model.predict([data])[0]
+
+        if np.argmax(model_out) == 0:
+            str_label = 'healthy'
+        elif np.argmax(model_out) == 1:
+            str_label = 'bacterial'
+        elif np.argmax(model_out) == 2:
+            str_label = 'viral'
+        elif np.argmax(model_out) == 3:
+            str_label = 'lateblight'
+
+        if str_label == 'healthy':
+            status = "HEALTHY"
+        else:
+            status = "UNHEALTHY"
+
+        message = tk.Label(text='Status: ' + status, background="lightgreen",
+                           fg="Brown", font=("", 15))
+        message.grid(column=0, row=3, padx=10, pady=10)
+        if str_label == 'bacterial':
+            diseasename = "Bacterial Spot "
+            disease = tk.Label(text='Disease Name: ' + diseasename, background="lightgreen",
+                               fg="Black", font=("", 15))
+            disease.grid(column=0, row=4, padx=10, pady=10)
+            r = tk.Label(text='Click below for remedies...', background="lightgreen", fg="Brown", font=("", 15))
+            r.grid(column=0, row=5, padx=10, pady=10)
+            button3 = tk.Button(text="Remedies", command=bact)
+            button3.grid(column=0, row=6, padx=10, pady=10)
+        elif str_label == 'viral':
+            diseasename = "Yellow leaf curl virus "
+            disease = tk.Label(text='Disease Name: ' + diseasename, background="lightgreen",
+                               fg="Black", font=("", 15))
+            disease.grid(column=0, row=4, padx=10, pady=10)
+            r = tk.Label(text='Click below for remedies...', background="lightgreen", fg="Brown", font=("", 15))
+            r.grid(column=0, row=5, padx=10, pady=10)
+            button3 = tk.Button(text="Remedies", command=vir)
+            button3.grid(column=0, row=6, padx=10, pady=10)
+        elif str_label == 'lateblight':
+            diseasename = "Late Blight "
+            disease = tk.Label(text='Disease Name: ' + diseasename, background="lightgreen",
+                               fg="Black", font=("", 15))
+            disease.grid(column=0, row=4, padx=10, pady=10)
+            r = tk.Label(text='Click below for remedies...', background="lightgreen", fg="Brown", font=("", 15))
+            r.grid(column=0, row=5, padx=10, pady=10)
+            button3 = tk.Button(text="Remedies", command=latebl)
+            button3.grid(column=0, row=6, padx=10, pady=10)
+        else:
+            r = tk.Label(text='Plant is healthy', background="lightgreen", fg="Black",
+                         font=("", 15))
+            r.grid(column=0, row=4, padx=10, pady=10)
+            button = tk.Button(text="Exit", command=exit)
+            button.grid(column=0, row=9, padx=20, pady=20)
+
+    plt.show()
+
+window.mainloop()
