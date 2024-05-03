@@ -153,8 +153,7 @@ def analysis():
     if os.path.exists('{}.meta'.format(MODEL_NAME)):
         model.load(MODEL_NAME)
         print('model loaded!')
-    else:
-        print('Model not found at:', model_path)
+   
 
     import matplotlib.pyplot as plt
 
