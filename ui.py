@@ -102,9 +102,8 @@ def analysis():
     verify_dir = 'testpicture'
     IMG_SIZE = 50
     LR = 1e-3
-    MODEL_NAME = f'healthyvsunhealthy-{LR}-2conv-basic'
-    model_path = MODEL_NAME + '.meta'
-  
+    MODEL_NAME = 'healthyvsunhealthy-{}-{}.model'.format(LR, '2conv-basic')
+    
     def process_verify_data():
         verifying_data = []
         for img in tqdm(os.listdir(verify_dir)):
@@ -151,7 +150,7 @@ def analysis():
 
     model = tflearn.DNN(convnet, tensorboard_dir='log')
 
-    if os.path.exists(model_path):
+    if os.path.exists('{}.meta'.format(MODEL_NAME)):
         model.load(MODEL_NAME)
         print('model loaded!')
     else:
