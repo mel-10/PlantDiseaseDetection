@@ -167,14 +167,21 @@ def analysis():
 
     for num, data in enumerate(verify_data):
 
+        print("Processing image", num + 1)
+
+
         img_num = data[1]
         img_data = data[0]
 
         y = fig.add_subplot(3, 4, num + 1)
         orig = img_data
         data = img_data.reshape(IMG_SIZE, IMG_SIZE, 3)
+        print("Data shape:", data.shape)
+
         # model_out = model.predict([data])[0]
         model_out = model.predict([data])[0]
+        print("Model output:", model_out)
+
 
         if np.argmax(model_out) == 0:
             str_label = 'healthy'
@@ -189,6 +196,8 @@ def analysis():
             status ="HEALTHY"
         else:
             status = "UNHEALTHY"
+
+        print("Detected status:", status)
 
         message = tk.Label(text='Status: '+status, background="lightgreen",
                            fg="Brown", font=("", 15))
