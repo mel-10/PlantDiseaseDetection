@@ -63,7 +63,7 @@ def analyze_image(image_path, model):
 # Open photo and analyze
 def open_photo():
     # Select the image for analysis
-    file_path = askopenfilename(initialdir='C:/Users/sagpa/Downloads/images', title='Select image for analysis', filetypes=[('image files', '.jpg')])
+    file_path = askopenfilename(initialdir='C:/Users/HP/Downloads/images', title='Select image for analysis', filetypes=[('image files', '.jpg')])
     
     # Load the model
     model = load_model()
@@ -89,9 +89,7 @@ def open_photo():
     # Analyze and display the disease result
     analyze_and_display_result(disease_label)
 
-# Create the "Get Photo" button and associate it with the open_photo() function
-button1 = tk.Button(text="Get Photo", command=open_photo)
-button1.grid(column=0, row=1, padx=10, pady=10)
+
 
 
 # Display remedies
