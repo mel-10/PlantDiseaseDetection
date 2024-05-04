@@ -23,7 +23,6 @@ IMG_SIZE = 50  # Adjust as needed
 LR = 1e-3
 MODEL_NAME = "healthyvsunhealthy-{}-{}.model".format(LR, "2conv-basic")  # Adjust LR and model details
 
-
 # Function to update GUI with disease information
 def update_gui(model_out):
     if np.argmax(model_out) == 0:
@@ -80,7 +79,7 @@ def bact():
     )
     remedies.grid(column=0, row=7, padx=10, pady=10)
     rem1 = (
-        " Discard or destroy any affected plants. \n  Do not compost them. \n  Rotate yoour tomato plants yearly to prevent re-infection next year. \n Use copper fungicites"
+        " Discard or destroy any affected plants. \n  Do not compost them. \n  Rotate your tomato plants yearly to prevent re-infection next year. \n Use copper fungicides"
     )
     remedies1 = tk.Label(
         text=rem1, background="lightgreen", fg="Black", font=("", 12)
@@ -105,7 +104,7 @@ def vir():
     )
     remedies.grid(column=0, row=7, padx=10, pady=10)
     rem1 = (
-        " Monitor the field, handpick diseased plants and bury them. \n  Use sticky yellow plastic traps. \n  Spray insecticides such as organophosphates, carbametes during the seedliing stage. \n Use copper fungicites"
+        " Monitor the field, handpick diseased plants and bury them. \n  Use sticky yellow plastic traps. \n  Spray insecticides such as organophosphates, carbamates during the seedling stage. \n Use copper fungicides"
     )
     remedies1 = tk.Label(
         text=rem1, background="lightgreen", fg="Black", font=("", 12)
@@ -131,7 +130,7 @@ def latebl():
     remedies.grid(column=0, row=7, padx=10, pady=10)
 
     rem1 = (
-        " Monitor the field, remove and destroy infected leaves. \n  Treat organically with copper spray. \n  Use chemical fungicides,the best of which for tomatoes is chlorothalonil."
+        " Monitor the field, remove and destroy infected leaves. \n  Treat organically with copper spray. \n  Use chemical fungicides, the best of which for tomatoes is chlorothalonil."
     )
     remedies1 = tk.Label(
         text=rem1, background="lightgreen", fg="Black", font=("", 12)
@@ -143,24 +142,53 @@ def latebl():
 
     window1.mainloop()
 
- def process_verify_data():
-     verify_dir = 'testpicture'
-     verifying_data = []
-     for img in tqdm(os.listdir(verify_dir)):
-         path = os.path.join(verify_dir, img)
-         img_num = img.split('.')[0]
-         img = cv2.imread(path, cv2.IMREAD_COLOR)
-         img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-         verifying_data.append([np.array(img), img_num])
-     np.save('verify_data.npy', verifying_data)
-     return verifying_data
+def process_verify_data():
+    verify_dir = 'testpicture'
+    verifying_data = []
+    for img in tqdm(os.listdir(verify_dir)):
+        path = os.path.join(verify_dir, img)
+        img_num = img.split('.')[0]
+        img = cv2.imread(path, cv2.IMREAD_COLOR)
+        img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+        verifying_data.append([np.array(img), img_num])
+    np.save('verify_data.npy', verifying_data)
+    return verifying_data
 
- verify_data = process_verify_data()
- #verify_data = np.load('verify_data.npy')
+verify_data = process_verify_data()
 
-# Function to analyze images
-def analysis(verify_data):
-    loading_message.config(text="Loading...")
+def analysis():
+    tf.reset_default_graph()
+
+    convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 3], name='input')
+
+    convnet = conv_2d(convnet, 32, 3, activation='relu')
+    convnet = max_pool_2d(convnet, 3)
+
+    convnet = conv_2d(convnet, 64, 3, activation='relu')
+    convnet = max_pool_2d(convnet, 3)
+
+    convnet = conv_2d(convnet, 128, 3, activation='relu')
+    convnet = max_pool_2d(convnet, 3)
+
+    convnet = conv_2d(convnet, 32, 3, activation='relu')
+    convnet = max_pool_2d(convnet, 3)
+
+    convnet = conv_2d(convnet, 64, 3, activation='relu')
+    convnet = max_pool_2d(convnet, 3)
+
+    convnet = fully_connected(convnet, 1024, activation='relu')
+    convnet = dropout(convnet, 0.8)
+
+    convnet = fully_connected(convnet, 4, activation='softmax')
+    convnet = regression(convnet, optimizer='adam', learning_rate=LR, loss='categorical_crossentropy', name='targets')
+
+    model = tflearn.DNN(convnet, tensorboard_dir='log')
+
+    if os.path.exists('{}.meta'.format(MODEL_NAME)):
+        model.load(MODEL_NAME)
+        print('model loaded!')
+
+    fig = plt.figure()
 
     num_iterations = min(len(verify_data), 12)
 
@@ -185,7 +213,6 @@ def analysis(verify_data):
             print("Error processing image:", e)
 
         window.update()
-analysis(verify_data)
 
 # Function to open photo for analysis
 def openphoto():
