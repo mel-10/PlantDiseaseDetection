@@ -156,6 +156,7 @@ def analysis():
 
     
     import matplotlib.pyplot as plt
+    from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
     fig = plt.figure()
 
