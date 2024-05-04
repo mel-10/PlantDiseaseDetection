@@ -248,7 +248,7 @@ def analysis():
             button.grid(column=0, row=9, padx=20, pady=20)
             window.update()
             
-     loading_message.destroy()
+    loading_message.destroy()
 
 def openphoto():
     dirPath = "testpicture"
