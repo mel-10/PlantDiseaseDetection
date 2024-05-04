@@ -1,4 +1,6 @@
 import tkinter as tk
+import adafruit_dht
+import board
 from tkinter.filedialog import askopenfilename
 import shutil
 import os
@@ -131,6 +133,22 @@ def analyze_and_display_result(disease_label):
     window.geometry("500x500")
     window.configure(background="lightgreen")
 
+    # Read DHT11 sensor data
+    dht11_pin = board.D4  # GPIO pin connected to the DHT11 sensor
+    temperature_c, temperature_f, humidity = read_dht11_sensor(dht11_pin)
+
+    # Display DHT11 sensor readings
+    if temperature_c is not None and humidity is not None:
+        temperature_label = tk.Label(window, text=f"Temperature: {temperature_c:.1f}°C / {temperature_f:.1f}°F", background="lightgreen", fg="Black", font=("", 15))
+        temperature_label.grid(column=0, row=0, padx=10, pady=10)
+
+        humidity_label = tk.Label(window, text=f"Humidity: {humidity:.1f}%", background="lightgreen", fg="Black", font=("", 15))
+        humidity_label.grid(column=0, row=1, padx=10, pady=10)
+    else:
+        error_label = tk.Label(window, text="Failed to read DHT11 sensor data", background="lightgreen", fg="Red", font=("", 15))
+        error_label.grid(column=0, row=0, padx=10, pady=10)
+
+
     status_label = tk.Label(window, text=f"Status: {disease_label}", background="lightgreen", fg="Brown", font=("", 15))
     status_label.grid(column=0, row=0, padx=10, pady=10)
 
@@ -146,6 +164,22 @@ def analyze_and_display_result(disease_label):
 
     exit_button = tk.Button(window, text="Exit", command=lambda: exit_window(window))
     exit_button.grid(column=0, row=3, padx=10, pady=10)
+
+def read_dht11_sensor(pin):
+    try:
+        sensor = adafruit_dht.DHT11(pin)
+        temperature_c = sensor.temperature
+        temperature_f = temperature_c * (9 / 5) + 32
+        humidity = sensor.humidity
+        return temperature_c, temperature_f, humidity
+    except RuntimeError as error:
+        # Errors happen fairly often, DHT's are hard to read, just keep going
+        print(error.args[0])
+        return None, None, None
+    except Exception as error:
+        sensor.exit()
+        raise error
+
 
 
 # Create the UI
