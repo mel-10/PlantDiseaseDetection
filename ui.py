@@ -157,7 +157,7 @@ def process_verify_data():
 verify_data = process_verify_data()
 
 def analysis():
-    tf.reset_default_graph()
+    
 
     convnet = input_data(shape=[None, IMG_SIZE, IMG_SIZE, 3], name='input')
 
