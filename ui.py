@@ -166,10 +166,9 @@ def analysis():
     window.update()  # Update the tkinter window
 
 
-    for num, data in enumerate(verify_data):
-
+    try:
+        for num, data in enumerate(verify_data):
         print("Processing image", num + 1)
-
 
         img_num = data[1]
         img_data = data[0]
@@ -182,7 +181,6 @@ def analysis():
         # model_out = model.predict([data])[0]
         model_out = model.predict([data])[0]
         print("Model output:", model_out)
-
 
         if np.argmax(model_out) == 0:
             str_label = 'healthy'
@@ -249,6 +247,9 @@ def analysis():
             window.update()
             
     loading_message.destroy()
+    
+except Exception as e:
+    print("An error occurred:", e)
 
 def openphoto():
     dirPath = "testpicture"
