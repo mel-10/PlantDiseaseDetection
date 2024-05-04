@@ -191,34 +191,45 @@ def analysis():
             disease = tk.Label(text='Disease Name: ' + diseasename, background="lightgreen",
                                fg="Black", font=("", 15))
             disease.grid(column=0, row=4, padx=10, pady=10)
+            window.update()
             r = tk.Label(text='Click below for remedies...', background="lightgreen", fg="Brown", font=("", 15))
             r.grid(column=0, row=5, padx=10, pady=10)
+            window.update()
             button3 = tk.Button(text="Remedies", command=bact)
             button3.grid(column=0, row=6, padx=10, pady=10)
+            window.update()
         elif str_label == 'viral':
             diseasename = "Yellow leaf curl virus "
             disease = tk.Label(text='Disease Name: ' + diseasename, background="lightgreen",
                                fg="Black", font=("", 15))
             disease.grid(column=0, row=4, padx=10, pady=10)
+            window.update()
             r = tk.Label(text='Click below for remedies...', background="lightgreen", fg="Brown", font=("", 15))
             r.grid(column=0, row=5, padx=10, pady=10)
+            window.update()
             button3 = tk.Button(text="Remedies", command=vir)
             button3.grid(column=0, row=6, padx=10, pady=10)
+            window.update()
         elif str_label == 'lateblight':
             diseasename = "Late Blight "
             disease = tk.Label(text='Disease Name: ' + diseasename, background="lightgreen",
                                fg="Black", font=("", 15))
             disease.grid(column=0, row=4, padx=10, pady=10)
+            window.update()
             r = tk.Label(text='Click below for remedies...', background="lightgreen", fg="Brown", font=("", 15))
             r.grid(column=0, row=5, padx=10, pady=10)
+            window.update()
             button3 = tk.Button(text="Remedies", command=latebl)
             button3.grid(column=0, row=6, padx=10, pady=10)
+            window.update()
         else:
             r = tk.Label(text='Plant is healthy', background="lightgreen", fg="Black",
                          font=("", 15))
             r.grid(column=0, row=4, padx=10, pady=10)
+            window.update()
             button = tk.Button(text="Exit", command=exit)
             button.grid(column=0, row=9, padx=20, pady=20)
+            window.update()
 
 def openphoto():
     dirPath = "testpicture"
