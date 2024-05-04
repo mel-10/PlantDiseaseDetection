@@ -13,6 +13,7 @@ import tensorflow as tf
 
 def exit_window(window):
     window.destroy()
+
 # Load the model
 def load_model():
     LR = 1e-3
@@ -61,14 +62,29 @@ def analyze_image(image_path, model):
 
 # Open photo and analyze
 def open_photo():
-    file_path = askopenfilename(initialdir='C:/Users/HP/Downloads/images', title='Select image for analysis', filetypes=[('image files', '.jpg')])
+    file_path = askopenfilename(initialdir='C:/Users/sagpa/Downloads/images', title='Select image for analysis', filetypes=[('image files', '.jpg')])
     model = load_model()
     disease_label = analyze_image(file_path, model)
-    analyze_and_display_result(disease_label, file_path)
+
+        # Display the selected image
+    img = Image.open(file_path)
+    img = img.resize((300, 300), Image.ANTIALIAS)
+    img = ImageTk.PhotoImage(img)
+
+    # Create a new window to display the image
+    window_img = tk.Toplevel()
+    window_img.title("Selected Image")
+    window_img.geometry("500x500")
+    window_img.configure(background="lightgreen")
+
+    img_label = tk.Label(window_img, image=img)
+    img_label.image = img
+    img_label.pack(pady=10)
+
+    analyze_and_display_result(disease_label)
 
 # Display remedies
 def display_remedies(disease_name):
-    # Same as before
     remedies_text = {
         "Bacterial Spot": "The remedies for Bacterial Spot are:\n\n"
                           "1. Discard or destroy any affected plants.\n"
@@ -98,23 +114,13 @@ def display_remedies(disease_name):
         no_remedies_label = tk.Label(window, text="No remedies found for this disease.", background="lightgreen", fg="Black", font=("", 12))
         no_remedies_label.pack(padx=10, pady=10)
 
+
 # Analyze and display result
-def analyze_and_display_result(disease_label, image_path):
-    # Same as before
+def analyze_and_display_result(disease_label):
     window = tk.Tk()
     window.title("Disease Detection")
     window.geometry("500x500")
     window.configure(background="lightgreen")
-
-    # Load and display the selected image
-    img = Image.open(image_path)
-    img = img.resize((300, 300), Image.ANTIALIAS)
-    img = ImageTk.PhotoImage(img)
-
-    img_label = tk.Label(window, image=img)
-    img_label.image = img
-    img_label.pack(pady=10)
-
 
     status_label = tk.Label(window, text=f"Status: {disease_label}", background="lightgreen", fg="Brown", font=("", 15))
     status_label.grid(column=0, row=0, padx=10, pady=10)
@@ -131,7 +137,6 @@ def analyze_and_display_result(disease_label, image_path):
 
     exit_button = tk.Button(window, text="Exit", command=lambda: exit_window(window))
     exit_button.grid(column=0, row=3, padx=10, pady=10)
-
 
 
 # Create the UI
