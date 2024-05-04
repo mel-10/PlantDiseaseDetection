@@ -197,123 +197,122 @@ def analysis():
     loading_message.grid(column=0, row=3, padx=10, pady=10)
     window.update()  # Update the tkinter window
 
-    try:
-        for num, data in enumerate(verify_data):
-            print("Processing image", num + 1)
 
-            img_num = data[1]
-            img_data = data[0]
+    for num, data in enumerate(verify_data):
+        print("Processing image", num + 1)
 
-            y = fig.add_subplot(3, 4, num + 1)
-            orig = img_data
-            data = img_data.reshape(IMG_SIZE, IMG_SIZE, 3)
-            print("Data shape:", data.shape)
+        img_num = data[1]
+        img_data = data[0]
 
-            # model_out = model.predict([data])[0]
-            model_out = model.predict([data])[0]
-            print("Model output:", model_out)
+        y = fig.add_subplot(3, 4, num + 1)
+        orig = img_data
+        data = img_data.reshape(IMG_SIZE, IMG_SIZE, 3)
+        print("Data shape:", data.shape)
 
-            if np.argmax(model_out) == 0:
-                str_label = "healthy"
-            elif np.argmax(model_out) == 1:
-                str_label = "bacterial"
-            elif np.argmax(model_out) == 2:
-                str_label = "viral"
-            elif np.argmax(model_out) == 3:
-                str_label = "lateblight"
+        # model_out = model.predict([data])[0]
+        model_out = model.predict([data])[0]
+        print("Model output:", model_out)
 
-            if str_label == "healthy":
-                status = "HEALTHY"
-            else:
-                status = "UNHEALTHY"
+        if np.argmax(model_out) == 0:
+            str_label = "healthy"
+        elif np.argmax(model_out) == 1:
+            str_label = "bacterial"
+        elif np.argmax(model_out) == 2:
+            str_label = "viral"
+        elif np.argmax(model_out) == 3:
+            str_label = "lateblight"
 
-            print("Detected status:", status)
+        if str_label == "healthy":
+            status = "HEALTHY"
+        else:
+            status = "UNHEALTHY"
 
-            message = tk.Label(
-                text="Status: " + status,
+        print("Detected status:", status)
+
+        message = tk.Label(
+            text="Status: " + status,
+            background="lightgreen",
+            fg="Brown",
+            font=("", 15),
+        )
+        message.grid(column=0, row=3, padx=10, pady=10)
+        if str_label == "bacterial":
+            diseasename = "Bacterial Spot "
+            disease = tk.Label(
+                text="Disease Name: " + diseasename,
+                background="lightgreen",
+                fg="Black",
+                font=("", 15),
+            )
+            disease.grid(column=0, row=4, padx=10, pady=10)
+            window.update()
+            r = tk.Label(
+                text="Click below for remedies...",
                 background="lightgreen",
                 fg="Brown",
                 font=("", 15),
             )
-            message.grid(column=0, row=3, padx=10, pady=10)
-            if str_label == "bacterial":
-                diseasename = "Bacterial Spot "
-                disease = tk.Label(
-                    text="Disease Name: " + diseasename,
-                    background="lightgreen",
-                    fg="Black",
-                    font=("", 15),
-                )
-                disease.grid(column=0, row=4, padx=10, pady=10)
-                window.update()
-                r = tk.Label(
-                    text="Click below for remedies...",
-                    background="lightgreen",
-                    fg="Brown",
-                    font=("", 15),
-                )
-                r.grid(column=0, row=5, padx=10, pady=10)
-                window.update()
-                button3 = tk.Button(text="Remedies", command=bact)
-                button3.grid(column=0, row=6, padx=10, pady=10)
-                window.update()
-            elif str_label == "viral":
-                diseasename = "Yellow leaf curl virus "
-                disease = tk.Label(
-                    text="Disease Name: " + diseasename,
-                    background="lightgreen",
-                    fg="Black",
-                    font=("", 15),
-                )
-                disease.grid(column=0, row=4, padx=10, pady=10)
-                window.update()
-                r = tk.Label(
-                    text="Click below for remedies...",
-                    background="lightgreen",
-                    fg="Brown",
-                    font=("", 15),
-                )
-                r.grid(column=0, row=5, padx=10, pady=10)
-                window.update()
-                button3 = tk.Button(text="Remedies", command=vir)
-                button3.grid(column=0, row=6, padx=10, pady=10)
-                window.update()
-            elif str_label == "lateblight":
-                diseasename = "Late Blight "
-                disease = tk.Label(
-                    text="Disease Name: " + diseasename,
-                    background="lightgreen",
-                    fg="Black",
-                    font=("", 15),
-                )
-                disease.grid(column=0, row=4, padx=10, pady=10)
-                window.update()
-                r = tk.Label(
-                    text="Click below for remedies...",
-                    background="lightgreen",
-                    fg="Brown",
-                    font=("", 15),
-                )
-                r.grid(column=0, row=5, padx=10, pady=10)
-                window.update()
-                button3 = tk.Button(text="Remedies", command=latebl)
-                button3.grid(column=0, row=6, padx=10, pady=10)
-                window.update()
-            else:
-                r = tk.Label(
-                    text="Plant is healthy",
-                    background="lightgreen",
-                    fg="Black",
-                    font=("", 15),
-                )
-                r.grid(column=0, row=4, padx=10, pady=10)
-                window.update()
-                button = tk.Button(text="Exit", command=exit)
-                button.grid(column=0, row=9, padx=20, pady=20)
-                window.update()
+            r.grid(column=0, row=5, padx=10, pady=10)
+            window.update()
+            button3 = tk.Button(text="Remedies", command=bact)
+            button3.grid(column=0, row=6, padx=10, pady=10)
+            window.update()
+        elif str_label == "viral":
+            diseasename = "Yellow leaf curl virus "
+            disease = tk.Label(
+                text="Disease Name: " + diseasename,
+                background="lightgreen",
+                fg="Black",
+                font=("", 15),
+            )
+            disease.grid(column=0, row=4, padx=10, pady=10)
+            window.update()
+            r = tk.Label(
+                text="Click below for remedies...",
+                background="lightgreen",
+                fg="Brown",
+                font=("", 15),
+            )
+            r.grid(column=0, row=5, padx=10, pady=10)
+            window.update()
+            button3 = tk.Button(text="Remedies", command=vir)
+            button3.grid(column=0, row=6, padx=10, pady=10)
+            window.update()
+        elif str_label == "lateblight":
+            diseasename = "Late Blight "
+            disease = tk.Label(
+                text="Disease Name: " + diseasename,
+                background="lightgreen",
+                fg="Black",
+                font=("", 15),
+            )
+            disease.grid(column=0, row=4, padx=10, pady=10)
+            window.update()
+            r = tk.Label(
+                text="Click below for remedies...",
+                background="lightgreen",
+                fg="Brown",
+                font=("", 15),
+            )
+            r.grid(column=0, row=5, padx=10, pady=10)
+            window.update()
+            button3 = tk.Button(text="Remedies", command=latebl)
+            button3.grid(column=0, row=6, padx=10, pady=10)
+            window.update()
+        else:
+            r = tk.Label(
+                text="Plant is healthy",
+                background="lightgreen",
+                fg="Black",
+                font=("", 15),
+            )
+            r.grid(column=0, row=4, padx=10, pady=10)
+            window.update()
+            button = tk.Button(text="Exit", command=exit)
+            button.grid(column=0, row=9, padx=20, pady=20)
+            window.update()
 
-    except Exception as e:
-        print("An error occurred:", e)
+ 
 
 
 def openphoto():
