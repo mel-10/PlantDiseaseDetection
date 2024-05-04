@@ -106,6 +106,16 @@ def analyze_and_display_result(disease_label):
     window.geometry("500x500")
     window.configure(background="lightgreen")
 
+    # Load and display the selected image
+    img = Image.open(image_path)
+    img = img.resize((300, 300), Image.ANTIALIAS)
+    img = ImageTk.PhotoImage(img)
+
+    img_label = tk.Label(window, image=img)
+    img_label.image = img
+    img_label.pack(pady=10)
+
+
     status_label = tk.Label(window, text=f"Status: {disease_label}", background="lightgreen", fg="Brown", font=("", 15))
     status_label.grid(column=0, row=0, padx=10, pady=10)
 
