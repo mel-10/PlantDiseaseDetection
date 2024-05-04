@@ -19,6 +19,11 @@ window.title("Dr. Plant")
 window.geometry("500x510")
 window.configure(background="lightgreen")
 
+IMG_SIZE = 50  # Adjust as needed
+LR = 1e-3
+MODEL_NAME = "healthyvsunhealthy-{}-{}.model".format(LR, "2conv-basic")  # Adjust LR and model details
+
+
 # Function to update GUI with disease information
 def update_gui(model_out):
     if np.argmax(model_out) == 0:
