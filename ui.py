@@ -62,13 +62,18 @@ def analyze_image(image_path, model):
 
 # Open photo and analyze
 def open_photo():
+    # Select the image for analysis
     file_path = askopenfilename(initialdir='C:/Users/sagpa/Downloads/images', title='Select image for analysis', filetypes=[('image files', '.jpg')])
+    
+    # Load the model
     model = load_model()
+    
+    # Analyze the selected image
     disease_label = analyze_image(file_path, model)
 
-        # Display the selected image
+    # Display the selected image
     img = Image.open(file_path)
-    img = img.resize((300, 300), Image.ANTIALIAS)
+    img = img.resize((300, 300))  # Resize the image
     img = ImageTk.PhotoImage(img)
 
     # Create a new window to display the image
@@ -81,7 +86,13 @@ def open_photo():
     img_label.image = img
     img_label.pack(pady=10)
 
-    analyze_and_display_result(disease_label, file_path)
+    # Analyze and display the disease result
+    analyze_and_display_result(disease_label)
+
+# Create the "Get Photo" button and associate it with the open_photo() function
+button1 = tk.Button(text="Get Photo", command=open_photo)
+button1.grid(column=0, row=1, padx=10, pady=10)
+
 
 # Display remedies
 def display_remedies(disease_name):
