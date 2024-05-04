@@ -154,9 +154,16 @@ def analysis():
         model.load(MODEL_NAME)
         print('model loaded!')
 
+    
     import matplotlib.pyplot as plt
 
     fig = plt.figure()
+
+    loading_message = tk.Label(text='Loading...', background="lightgreen",
+                           fg="Brown", font=("", 15))
+    loading_message.grid(column=0, row=3, padx=10, pady=10)
+    window.update()  # Update the tkinter window
+
 
     for num, data in enumerate(verify_data):
 
