@@ -64,7 +64,7 @@ def open_photo():
     file_path = askopenfilename(initialdir='C:/Users/HP/Downloads/images', title='Select image for analysis', filetypes=[('image files', '.jpg')])
     model = load_model()
     disease_label = analyze_image(file_path, model)
-    analyze_and_display_result(disease_label)
+    analyze_and_display_result(disease_label, file_path)
 
 # Display remedies
 def display_remedies(disease_name):
@@ -99,7 +99,7 @@ def display_remedies(disease_name):
         no_remedies_label.pack(padx=10, pady=10)
 
 # Analyze and display result
-def analyze_and_display_result(disease_label):
+def analyze_and_display_result(disease_label, image_path):
     # Same as before
     window = tk.Tk()
     window.title("Disease Detection")
@@ -131,6 +131,7 @@ def analyze_and_display_result(disease_label):
 
     exit_button = tk.Button(window, text="Exit", command=lambda: exit_window(window))
     exit_button.grid(column=0, row=3, padx=10, pady=10)
+
 
 
 # Create the UI
