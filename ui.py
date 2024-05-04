@@ -7,10 +7,10 @@ from PIL import Image, ImageTk
 
 window = tk.Tk()
 
-window.title("Dr. Plant")
+window.title('Leaf Disease Detection')
 
-window.geometry("500x510")
-window.configure(background="lightgreen")
+window.geometry('500x510')
+window.configure(background='lightgreen')
 
 title = tk.Label(
     text="Click below to choose picture for testing disease....",
@@ -39,7 +39,7 @@ def bact():
     )
     remedies.grid(column=0, row=7, padx=10, pady=10)
     rem1 = (
-        " Discard or destroy any affected plants. \n  Do not compost them. \n  Rotate yoour tomato plants yearly to prevent re-infection next year. \n Use copper fungicites"
+        " Discard or destroy any affected plants. \n  Do not compost them. \n  Rotate your tomato plants yearly to prevent re-infection next year. \n Use copper fungicites"
     )
     remedies1 = tk.Label(
         text=rem1, background="lightgreen", fg="Black", font=("", 12)
@@ -182,6 +182,8 @@ def analysis():
     if os.path.exists("{}.meta".format(MODEL_NAME)):
         model.load(MODEL_NAME)
         print("model loaded!")
+    else:
+        print("Model file not found. Make sure the path to your model file is correct.")
 
     import matplotlib.pyplot as plt
     from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -199,6 +201,8 @@ def analysis():
 
 
     for num, data in enumerate(verify_data):
+        if num >= 12:  # Adjust the number based on the size of verify_data
+            break
         print("Processing image", num + 1)
 
         img_num = data[1]
