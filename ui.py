@@ -120,9 +120,9 @@ def analysis():
     import numpy as np  # dealing with arrays
     import os  # dealing with directories
     from random import shuffle  # mixing up or currently ordered data that might lead our network astray in training.
-    from tqdm import (
-        tqdm,
-    )  # a nice pretty percentage bar for tasks. Thanks to viewer Daniel BA1/4hler for this suggestion
+    from tqdm import \
+        tqdm
+      # a nice pretty percentage bar for tasks. Thanks to viewer Daniel BA1/4hler for this suggestion
     verify_dir = "testpicture"
     IMG_SIZE = 50
     LR = 1e-3
