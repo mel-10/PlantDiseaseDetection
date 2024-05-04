@@ -81,7 +81,7 @@ def open_photo():
     img_label.image = img
     img_label.pack(pady=10)
 
-    analyze_and_display_result(disease_label)
+    analyze_and_display_result(disease_label, file_path)
 
 # Display remedies
 def display_remedies(disease_name):
