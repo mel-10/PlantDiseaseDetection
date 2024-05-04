@@ -139,18 +139,19 @@ def latebl():
     window1.mainloop()
 
  def process_verify_data():
-        verifying_data = []
-        for img in tqdm(os.listdir(verify_dir)):
-            path = os.path.join(verify_dir, img)
-            img_num = img.split('.')[0]
-            img = cv2.imread(path, cv2.IMREAD_COLOR)
-            img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-            verifying_data.append([np.array(img), img_num])
-        np.save('verify_data.npy', verifying_data)
-        return verifying_data
+     verify_dir = 'testpicture'
+     verifying_data = []
+     for img in tqdm(os.listdir(verify_dir)):
+         path = os.path.join(verify_dir, img)
+         img_num = img.split('.')[0]
+         img = cv2.imread(path, cv2.IMREAD_COLOR)
+         img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+         verifying_data.append([np.array(img), img_num])
+     np.save('verify_data.npy', verifying_data)
+     return verifying_data
 
-verify_data = process_verify_data()
-#verify_data = np.load('verify_data.npy')
+ verify_data = process_verify_data()
+ #verify_data = np.load('verify_data.npy')
 
 # Function to analyze images
 def analysis(verify_data):
