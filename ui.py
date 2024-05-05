@@ -140,13 +140,13 @@ def analyze_and_display_result(disease_label):
     # Display DHT11 sensor readings
     if temperature_c is not None and humidity is not None:
         temperature_label = tk.Label(window, text=f"Temperature: {temperature_c:.1f}°C / {temperature_f:.1f}°F", background="lightgreen", fg="Black", font=("", 15))
-        temperature_label.grid(column=0, row=0, padx=10, pady=10)
+        temperature_label.grid(column=0, row=4, padx=10, pady=10)
 
         humidity_label = tk.Label(window, text=f"Humidity: {humidity:.1f}%", background="lightgreen", fg="Black", font=("", 15))
-        humidity_label.grid(column=0, row=1, padx=10, pady=10)
+        humidity_label.grid(column=0, row=5, padx=10, pady=10)
     else:
         error_label = tk.Label(window, text="Failed to read DHT11 sensor data", background="lightgreen", fg="Red", font=("", 15))
-        error_label.grid(column=0, row=0, padx=10, pady=10)
+        error_label.grid(column=0, row=5, padx=10, pady=10)
 
 
     status_label = tk.Label(window, text=f"Status: {disease_label}", background="lightgreen", fg="Brown", font=("", 15))
