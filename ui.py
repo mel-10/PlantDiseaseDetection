@@ -173,8 +173,8 @@ def read_dht11_sensor(pin):
         humidity = sensor.humidity
         return temperature_c, temperature_f, humidity
     except RuntimeError as error:
-        # Errors happen fairly often, DHT's are hard to read, just keep going
-        print(error.args[0])
+        # Print the error message directly
+        print("Error reading DHT11 sensor:", error)
         return None, None, None
     except Exception as error:
         sensor.exit()
